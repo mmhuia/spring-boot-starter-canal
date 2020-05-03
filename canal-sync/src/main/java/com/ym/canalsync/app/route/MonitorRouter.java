@@ -104,15 +104,15 @@ public class MonitorRouter {
     }
 
     private Object[] getInvokeArgs(Method method, Map<String, Object> data, String pk) {
-        List<Column> list = new ArrayList<>();
+        Columns c = new Columns();
 
         if (data != null) {
-            data.forEach((key, value) -> list.add(new Column(key, value)));
+            c.setData(data);
         }
 
         return Arrays.stream(method.getParameterTypes())
-                .map(p -> p == List.class
-                        ? list
+                .map(p -> p == Columns.class
+                        ? c
                         : p == String.class
                         ? pk : null)
                 .toArray();

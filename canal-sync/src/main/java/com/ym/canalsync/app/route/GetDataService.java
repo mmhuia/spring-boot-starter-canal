@@ -1,7 +1,7 @@
 package com.ym.canalsync.app.route;
 
-import com.ym.canalsync.app.config.mdb.DataSource;
-import com.ym.canalsync.app.config.mdb.DataSourceEnum;
+import com.baomidou.dynamic.datasource.annotation.DS;
+import com.ym.canalsync.app.config.DSEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +16,7 @@ import java.util.Map;
  * @date 2020-04-23 14:50
  */
 @Service
+@DS(DSEnum.BOSS_PMS)
 public class GetDataService {
 
     private static final String SQL = "select * from %s where id = ?";
@@ -23,7 +24,7 @@ public class GetDataService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @DataSource(DataSourceEnum.BOSS_PMS)
+
     public Map<String, Object> selectData(String pk, String table) {
         String sql = String.format(SQL, table);
         try {

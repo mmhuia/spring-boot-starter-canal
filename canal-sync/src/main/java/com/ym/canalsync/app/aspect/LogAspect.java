@@ -2,7 +2,7 @@ package com.ym.canalsync.app.aspect;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.ym.canalsync.app.route.OperType;
-import com.ym.canalsync.app.sync.service.ICanalErrorLogService;
+import com.ym.canalsync.app.sync.pmsboss.service.ICanalErrorLogService;
 import com.ym.starter.canal.annotation.ListenPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
