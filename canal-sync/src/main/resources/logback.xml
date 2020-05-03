@@ -99,7 +99,7 @@
         <root>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
      -->
     <!-- 默认的日志输出级别为DEBUG，输出至控制台和文件 ，特殊定义logger如未设置相关属性也会继承root属性-->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_BOOT"/>
     </root>

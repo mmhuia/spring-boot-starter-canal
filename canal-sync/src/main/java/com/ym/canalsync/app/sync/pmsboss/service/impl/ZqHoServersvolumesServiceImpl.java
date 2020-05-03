@@ -26,7 +26,6 @@ import java.util.List;
 public class ZqHoServersvolumesServiceImpl extends ServiceImpl<ZqHoServersvolumesMapper, ZqHoServersvolumes> implements IZqHoServersvolumesService {
 
     @Override
-    @DS(DSEnum.BOSS_PMS)
     public Integer getVoVolumeBy(String voServicesid, int voTyep) {
         if(StringHelper.isNullOrEmptyString(voServicesid)){
             return null;

@@ -22,7 +22,6 @@ import com.ym.canalsync.app.utils.P;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +35,7 @@ import java.util.List;
  * @since 2020-04-29
  */
 @Service
+@DS(DSEnum.BOSS_PRODUCT_DB)
 public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssServer> implements ITBssServerService {
 
     @Autowired
@@ -69,8 +69,6 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
     private IZqHoNeseService iZqHoNeseService;
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
-    @DS(DSEnum.BOSS_PRODUCT_DB)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssServer t = new TBssServer();
         t.setId(columns.getValue("id"));
@@ -164,7 +162,6 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
     }
 
     @Override
-    @Transactional(rollbackFor = Throwable.class)
     public void delete(String id) {
         removeById(id);
 
