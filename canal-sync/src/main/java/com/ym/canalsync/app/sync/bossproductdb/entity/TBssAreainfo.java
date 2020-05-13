@@ -77,5 +77,7 @@ public class TBssAreainfo implements Serializable {
      */
     private String updateUser;
 
+    private Integer version = 0;
+
 
 }

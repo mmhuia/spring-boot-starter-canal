@@ -60,5 +60,5 @@ public class TBssServerCpu implements Serializable {
      */
     private Date addTime;
 
-
+    private Integer version = 0;
 }

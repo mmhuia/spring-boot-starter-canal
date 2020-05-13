@@ -13,4 +13,5 @@ import com.ym.canalsync.app.sync.bossproductdb.entity.TBssServerCpu;
  */
 public interface ITBssServerCpuService extends IService<TBssServerCpu> {
 
+    void removeBy(String serverId);
 }

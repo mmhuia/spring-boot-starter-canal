@@ -132,5 +132,5 @@ public class TBssNetworkDevices implements Serializable {
      */
     private String templateId;
 
-
+    private Integer version = 0;
 }

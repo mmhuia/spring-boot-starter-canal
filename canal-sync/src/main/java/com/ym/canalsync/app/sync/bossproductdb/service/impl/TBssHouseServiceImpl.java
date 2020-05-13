@@ -14,6 +14,7 @@ import com.ym.canalsync.app.sync.pmsboss.service.ISysAreaService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesFloorService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesHouseService;
 import com.ym.canalsync.app.utils.P;
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,5 +93,34 @@ public class TBssHouseServiceImpl extends ServiceImpl<TBssHouseMapper, TBssHouse
             tBssHouse.setAttribute(P.pInt(columns.getValue("attribution")));
             updateById(tBssHouse);
         }
+    }
+
+    @Override
+    public String getHouseId(String house) {
+        if (StringHelper.isNullOrEmptyString(house)) {
+            return "";
+        }
+
+        String[] split = house.split("/");
+        if (split.length < 2) {
+            return "";
+        }
+
+        String oldHouseName = split[0];
+        String houseName = split[1];
+
+        LambdaQueryWrapper<TBssHouse> lambdaQueryWrapper = new LambdaQueryWrapper();
+        lambdaQueryWrapper.eq(TBssHouse::getOldHouseName, oldHouseName);
+        lambdaQueryWrapper.eq(TBssHouse::getName, houseName);
+
+        List<TBssHouse> list = list(lambdaQueryWrapper);
+
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getId();
+        } else {
+            return "";
+        }
+
+
     }
 }

@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * <p>
@@ -102,5 +102,5 @@ public class TBssCpuModel implements Serializable {
      */
     private String productMapId;
 
-
+    private Integer version = 0;
 }

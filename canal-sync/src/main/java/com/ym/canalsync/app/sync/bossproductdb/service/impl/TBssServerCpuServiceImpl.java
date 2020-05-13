@@ -1,6 +1,7 @@
 package com.ym.canalsync.app.sync.bossproductdb.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ym.canalsync.app.config.DSEnum;
 import com.ym.canalsync.app.sync.bossproductdb.entity.TBssServerCpu;
@@ -20,4 +21,10 @@ import org.springframework.stereotype.Service;
 @DS(DSEnum.BOSS_PRODUCT_DB)
 public class TBssServerCpuServiceImpl extends ServiceImpl<TBssServerCpuMapper, TBssServerCpu> implements ITBssServerCpuService {
 
+    @Override
+    public void removeBy(String serverId) {
+        LambdaQueryWrapper<TBssServerCpu> params = new LambdaQueryWrapper();
+        params.eq(TBssServerCpu::getServerId, serverId);
+        remove(params);
+    }
 }

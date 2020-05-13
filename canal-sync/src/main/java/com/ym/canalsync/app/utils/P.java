@@ -20,8 +20,7 @@ public class P {
         int i = 0;
         try {
             i = Integer.parseInt(String.valueOf(o));
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } catch (Throwable ignore) {
         }
         return i;
     }

@@ -17,4 +17,10 @@ public interface ITBssHouseService extends IService<TBssHouse> {
     void onInsertOrUpdate(Columns columns, String id);
 
     void updateOldHousePart(Columns columns, String id);
+
+    /**
+     * @param house 香港机房/1F/大带宽区域
+     * @return
+     */
+    String getHouseId(String house);
 }

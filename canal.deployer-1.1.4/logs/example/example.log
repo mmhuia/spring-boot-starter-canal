@@ -1,6 +1,0 @@
-2020-04-24 10:53:47.988 [main] ERROR c.a.o.canal.instance.spring.SpringCanalInstanceGenerator - generator instance failed.
-com.alibaba.otter.canal.common.CanalException: instance : example config is not found
-2020-04-24 14:42:33.610 [main] ERROR c.a.o.canal.instance.spring.SpringCanalInstanceGenerator - generator instance failed.
-com.alibaba.otter.canal.common.CanalException: instance : example config is not found
-2020-04-24 17:29:26.524 [main] ERROR c.a.o.canal.instance.spring.SpringCanalInstanceGenerator - generator instance failed.
-com.alibaba.otter.canal.common.CanalException: instance : example config is not found

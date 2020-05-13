@@ -7,22 +7,17 @@ import com.ym.canalsync.app.config.DSEnum;
 import com.ym.canalsync.app.route.Columns;
 import com.ym.canalsync.app.sync.bossauthdb.entity.TBssUserDict;
 import com.ym.canalsync.app.sync.bossauthdb.service.ITBssUserDictService;
-import com.ym.canalsync.app.sync.bossproductdb.entity.TBssCabinet;
-import com.ym.canalsync.app.sync.bossproductdb.entity.TBssCpuModel;
-import com.ym.canalsync.app.sync.bossproductdb.entity.TBssServer;
-import com.ym.canalsync.app.sync.bossproductdb.entity.TBssServerCpu;
+import com.ym.canalsync.app.sync.bossproductdb.entity.*;
 import com.ym.canalsync.app.sync.bossproductdb.mapper.TBssServerMapper;
 import com.ym.canalsync.app.sync.bossproductdb.service.*;
-import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoMobanservicer;
-import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoNese;
-import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesCpumodule;
-import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesCputype;
+import com.ym.canalsync.app.sync.pmsboss.entity.*;
 import com.ym.canalsync.app.sync.pmsboss.service.*;
 import com.ym.canalsync.app.utils.P;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,10 +63,34 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
     @Autowired
     private IZqHoNeseService iZqHoNeseService;
 
+    @Autowired
+    private ITBssDiskDetailService itBssDiskDetailService;
+
+    @Autowired
+    private ITBssServerDiskService itBssServerDiskService;
+
+    @Autowired
+    private ITBssDiskModelService itBssDiskModelService;
+
+    @Autowired
+    private ITBssMemoryDetailService itBssMemoryDetailService;
+
+    @Autowired
+    private ITBssMemoryModelService itBssMemoryModelService;
+
+    @Autowired
+    private ITBssServerMemoryService itBssServerMemoryService;
+
+    @Autowired
+    private IZqHoNetworkcardService iZqHoNetworkcardService;
+
+    @Autowired
+    private ITBssServerNetworkService itBssServerNetworkService;
+
     @Override
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssServer t = new TBssServer();
-        t.setId(columns.getValue("id"));
+        t.setId(id);
         t.setCreateTime(columns.getValue("create_date"));
         t.setCreateUser(columns.getValue("create_by"));
         t.setUpdateTime(columns.getValue("update_date"));
@@ -88,13 +107,13 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
         t.setIsRaid(null);
         t.setRaidModelId(null);
         t.setRaidName(null);
-        t.setProductMapId(null);
         t.setServerDiskHot(null);
         t.setDiskInterfaceType(null);
         t.setServerOneMemory(null);
         t.setServerMemoryType(null);
         t.setServerMemorySpec(null);
         t.setServerDiskSpec(null);
+        t.setIsUseRaid(null);
 
         t.setServerCurrentDisk(getServerCurrentDisk(columns.getValue("id")));
         t.setServerCurrentMemory(getServerCurrentMemory(columns.getValue("id")));
@@ -113,61 +132,160 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
             t.setShowMode(moban.getSeDisplaytype());
             t.setReleaseStatus(moban.getServiceInsd());
 
-
-            String seTempletname = moban.getSeTempletname();
-            if (!StringHelper.isNullOrEmptyString(seTempletname)) {
-                String[] s = seTempletname.split("_");
-                if (s.length == 1) {
-                    t.setServerBrand(getServerBrand(s[0]));
-                } else {
-                    if (s.length >= 2) {
-                        t.setServerBrand(getServerBrand(s[1]));
-                    }
-                    if (s.length >= 3) {
-                        String s1 = s[2];
-                        t.setServerModel(getServerModel(s1));
-                    }
-                }
-            }
-
-
-            String seCpuid = moban.getSeCpuid();
-            if (!StringHelper.isNullOrEmptyString(seCpuid)) {
-                TBssCpuModel tBssCpuModel = itBssCpuModelService.getById(seCpuid);
-                if (tBssCpuModel != null) {
-                    t.setServerSpec(tBssCpuModel.getCpuName());
-
-                    LambdaQueryWrapper<TBssServerCpu> params = new LambdaQueryWrapper();
-                    params.eq(TBssServerCpu::getServerId, columns.getValue("id"));
-                    List<TBssServerCpu> list = itBssServerCpuService.list(params);
-                    if (list.isEmpty()) {
-                        TBssServerCpu tBssServerCpu = new TBssServerCpu();
-                        tBssServerCpu.setServerId(columns.getValue("id"));
-                        tBssServerCpu.setCpuName(tBssCpuModel.getCpuName());
-                        tBssServerCpu.setCpuModelId(tBssCpuModel.getId());
-                        tBssServerCpu.setCpuSlot(0);
-                        tBssServerCpu.setIsInit(0);
-                        tBssServerCpu.setAddTime(new Date());
-                        itBssServerCpuService.save(tBssServerCpu);
-                    }
-                }
-            }
-
-
             t.setServerCpuSlot(getServerCpuSlot(moban.getSeCpuid()));
+            setSeTempletname(t, moban);
+
+            //save t_bss_server_cpu
+            saveTBssServerCpu(t, moban, columns);
+        }
+
+        //save t_bss_server_disk
+        saveTBssServerDisk(id);
+        //save t_bss_server_memory
+        saveTBssServerMemory(id);
+        //save t_bss_server_network
+        saveTBssServerNetwork(id);
+
+        saveOrUpdate(t);
+    }
+
+    private void saveTBssServerNetwork(String serverId) {
+        LambdaQueryWrapper<TBssServerNetwork> n = new LambdaQueryWrapper();
+        n.eq(TBssServerNetwork::getServerId, serverId);
+        int count = itBssServerNetworkService.count(n);
+        if (count != 0) {
+            return;
         }
 
 
-        saveOrUpdate(t);
+        LambdaQueryWrapper<ZqHoNese> l = new LambdaQueryWrapper();
+        l.eq(ZqHoNese::getSeId, serverId);
+        l.eq(ZqHoNese::getDelFlag, 0);
+        List<ZqHoNese> list = iZqHoNeseService.list(l);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+        List<TBssServerNetwork> collect = new ArrayList<>();
+        for (ZqHoNese nese : list) {
+            ZqHoNetworkcard zqHoNetworkcard = iZqHoNetworkcardService.getById(nese.getNeId());
+            if (zqHoNetworkcard == null) {
+                continue;
+            }
+            TBssServerNetwork t = new TBssServerNetwork();
+            t.setServerId(serverId);
+            if (StringHelper.isNullOrEmptyString(nese.getSwitchboardId()) || StringHelper.isNullOrEmptyString(nese.getPortId())) {
+                t.setStatus(0);
+            } else {
+                t.setStatus(1);
+            }
+            t.setNetwork(zqHoNetworkcard.getNeName());
+            t.setNetworkDeviceId(nese.getSwitchboardId());
+            t.setNetworkDevicePort(nese.getPortId());
+            t.setSpeed(P.pInt(zqHoNetworkcard.getNeType()));
+            t.setIsIpmi(P.pInt(zqHoNetworkcard.getIsMangeCard()));
+            t.setInterfaceType(P.pInt(zqHoNetworkcard.getNeExport()));
+            t.setIsInit(1);
+            t.setAddTime(null);
+            collect.add(t);
+        }
+
+        if (collect.isEmpty()) {
+            return;
+        }
+
+        itBssServerNetworkService.saveBatch(collect, collect.size());
+    }
+
+    private void saveTBssServerMemory(String id) {
+        int count = itBssServerMemoryService.count(new LambdaQueryWrapper<TBssServerMemory>().eq(TBssServerMemory::getServerId, id));
+        if (count != 0) {
+            return;
+        }
+
+        List<ZqHoServersvolumes> list = iZqHoServersvolumesService.getBy(id, 1);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+        itBssServerMemoryService.save(list);
+    }
+
+    private void saveTBssServerDisk(String id) {
+        int count = itBssServerDiskService.count(new LambdaQueryWrapper<TBssServerDisk>().eq(TBssServerDisk::getServerId, id));
+        if (count != 0) {
+            return;
+        }
+
+        List<ZqHoServersvolumes> list = iZqHoServersvolumesService.getBy(id, 2);
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+
+
+        itBssServerDiskService.save(list);
+    }
+
+    private void saveTBssServerCpu(TBssServer t, ZqHoMobanservicer moban, Columns columns) {
+        String seCpuid = moban.getSeCpuid();
+        if (!StringHelper.isNullOrEmptyString(seCpuid)) {
+            TBssCpuModel tBssCpuModel = itBssCpuModelService.getById(seCpuid);
+            if (tBssCpuModel != null) {
+                t.setServerSpec(tBssCpuModel.getCpuName());
+
+                LambdaQueryWrapper<TBssServerCpu> params = new LambdaQueryWrapper();
+                params.eq(TBssServerCpu::getServerId, columns.getValue("id"));
+                List<TBssServerCpu> list = itBssServerCpuService.list(params);
+                if (list.isEmpty()) {
+                    TBssServerCpu tBssServerCpu = new TBssServerCpu();
+                    tBssServerCpu.setServerId(columns.getValue("id"));
+                    tBssServerCpu.setCpuName(tBssCpuModel.getCpuName());
+                    tBssServerCpu.setCpuModelId(tBssCpuModel.getId());
+                    tBssServerCpu.setCpuSlot(0);
+                    tBssServerCpu.setIsInit(0);
+                    tBssServerCpu.setAddTime(new Date());
+                    itBssServerCpuService.save(tBssServerCpu);
+                }
+            }
+        }
+
+    }
+
+    private void setSeTempletname(TBssServer t, ZqHoMobanservicer moban) {
+        String seTempletname = moban.getSeTempletname();
+        if (!StringHelper.isNullOrEmptyString(seTempletname)) {
+            String[] s = seTempletname.split("_");
+            if (s.length == 1) {
+                t.setServerBrand(getServerBrand(s[0]));
+            } else {
+                if (s.length >= 2) {
+                    t.setServerBrand(getServerBrand(s[1]));
+                }
+                if (s.length >= 3) {
+                    String s1 = s[2];
+                    t.setServerModel(getServerModel(s1));
+                }
+            }
+        }
+
     }
 
     @Override
     public void delete(String id) {
         removeById(id);
 
-        LambdaQueryWrapper<TBssServerCpu> params = new LambdaQueryWrapper();
-        params.eq(TBssServerCpu::getServerId, id);
-        itBssServerCpuService.remove(params);
+        //delete t_bss_server_cpu
+        itBssServerCpuService.removeBy(id);
+
+        //delete t_bss_server_disk
+        itBssServerDiskService.removeBy(id);
+
+        //delete t_bss_server_memory
+        itBssServerMemoryService.removeBy(id);
+
+        //delete t_bss_server_network
+        itBssServerNetworkService.removeBy(id);
+
     }
 
     private Integer getNetworkNumber(String id) {

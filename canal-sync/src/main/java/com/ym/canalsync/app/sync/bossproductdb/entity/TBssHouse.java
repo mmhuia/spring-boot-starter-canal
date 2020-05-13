@@ -142,5 +142,7 @@ public class TBssHouse implements Serializable {
      */
     private String cabinetPdu;
 
+    private Integer version = 0;
+
 
 }

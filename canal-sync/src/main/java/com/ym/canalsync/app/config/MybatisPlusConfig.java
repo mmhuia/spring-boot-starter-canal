@@ -32,4 +32,9 @@ public class MybatisPlusConfig {
         // paginationInterceptor.setLimit(500);
         return paginationInterceptor;
     }
+
+//    @Bean
+//    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+//        return new OptimisticLockerInterceptor();
+//    }
 }

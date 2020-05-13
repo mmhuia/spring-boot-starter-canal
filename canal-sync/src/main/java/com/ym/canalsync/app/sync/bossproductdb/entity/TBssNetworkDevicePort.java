@@ -112,5 +112,5 @@ public class TBssNetworkDevicePort implements Serializable {
      */
     private String url;
 
-
+    private Integer version = 0;
 }

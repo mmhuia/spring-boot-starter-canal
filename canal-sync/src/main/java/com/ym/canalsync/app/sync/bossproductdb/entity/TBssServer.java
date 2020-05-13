@@ -213,14 +213,11 @@ public class TBssServer implements Serializable {
     private String raidName;
 
     /**
-     * 产品组映射ID
-     */
-    private String productMapId;
-
-    /**
      * 发布状态(1否2是)
      */
     private Integer releaseStatus;
 
+    private Integer isUseRaid;
 
+    private Integer version = 0;
 }

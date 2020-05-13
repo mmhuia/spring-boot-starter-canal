@@ -132,5 +132,5 @@ public class TBssRegion implements Serializable {
      */
     private String bearing;
 
-
+    private Integer version = 0;
 }

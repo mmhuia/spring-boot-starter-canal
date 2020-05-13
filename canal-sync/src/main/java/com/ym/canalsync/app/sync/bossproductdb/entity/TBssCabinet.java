@@ -127,5 +127,7 @@ public class TBssCabinet implements Serializable {
      */
     private Integer status;
 
+    private Integer version = 0;
+
 
 }

@@ -97,5 +97,5 @@ public class TBssUlocation implements Serializable {
      */
     private String subscribeCustomer;
 
-
+    private Integer version = 0;
 }
