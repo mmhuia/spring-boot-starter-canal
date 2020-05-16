@@ -16,6 +16,7 @@ import com.ym.canalsync.app.sync.pmsboss.service.IZqHoServersvolumesService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHoServicerService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesMemorymoduleService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,7 @@ public class TBssMemoryDetailServiceImpl extends ServiceImpl<TBssMemoryDetailMap
     private IZqHoServicerService iZqHoServicerService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssMemoryDetail tBssMemoryDetail = new TBssMemoryDetail();
         tBssMemoryDetail.setId(id);

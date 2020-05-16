@@ -9,6 +9,7 @@ import com.ym.canalsync.app.sync.bossproductdb.entity.TBssUlocation;
 import com.ym.canalsync.app.sync.bossproductdb.mapper.TBssUlocationMapper;
 import com.ym.canalsync.app.sync.bossproductdb.service.ITBssUlocationService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -34,6 +35,7 @@ public class TBssUlocationServiceImpl extends ServiceImpl<TBssUlocationMapper, T
     private static final String BOOKED = "已预约";
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssUlocation tBssUlocation = new TBssUlocation();
         tBssUlocation.setId(columns.getValue("id"));

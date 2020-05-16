@@ -11,6 +11,7 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoServersvolumes;
 import com.ym.canalsync.app.sync.pmsboss.mapper.ZqHoServersvolumesMapper;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHoServersvolumesService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,7 @@ public class ZqHoServersvolumesServiceImpl extends ServiceImpl<ZqHoServersvolume
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         ZqHoServersvolumes e = getById(id);
         if (e == null) {
@@ -101,6 +103,7 @@ public class ZqHoServersvolumesServiceImpl extends ServiceImpl<ZqHoServersvolume
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void delete(Columns columns, String id) {
         itBssServerMemoryService.removeById(id);
         itBssServerDiskService.removeById(id);

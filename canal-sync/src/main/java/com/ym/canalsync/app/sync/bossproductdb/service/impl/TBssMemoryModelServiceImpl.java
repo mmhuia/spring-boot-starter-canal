@@ -15,6 +15,7 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesMemorytype;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesMemorymoduleService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesMemorytypeService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class TBssMemoryModelServiceImpl extends ServiceImpl<TBssMemoryModelMappe
     private IZqHostspacesMemorymoduleService iZqHostspacesMemorymoduleService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssMemoryModel t = new TBssMemoryModel();
         t.setId(id);
@@ -76,6 +78,7 @@ public class TBssMemoryModelServiceImpl extends ServiceImpl<TBssMemoryModelMappe
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void updateMemoryTypeAttr(Columns columns, String id) {
         int memoryCapacity = P.pInt(columns.getValue("memory_capacity"));
         Integer memoryType = getMemType(columns.getValue("memory_type"));

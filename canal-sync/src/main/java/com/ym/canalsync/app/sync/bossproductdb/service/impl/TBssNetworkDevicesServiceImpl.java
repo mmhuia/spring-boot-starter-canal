@@ -11,6 +11,7 @@ import com.ym.canalsync.app.sync.bossproductdb.mapper.TBssNetworkDevicesMapper;
 import com.ym.canalsync.app.sync.bossproductdb.service.ITBssCabinetService;
 import com.ym.canalsync.app.sync.bossproductdb.service.ITBssNetworkDevicesService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class TBssNetworkDevicesServiceImpl extends ServiceImpl<TBssNetworkDevice
     private ITBssCabinetService itBssCabinetService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssNetworkDevices tBssNetworkDevices = new TBssNetworkDevices();
         tBssNetworkDevices.setId(columns.getValue("id"));

@@ -10,6 +10,7 @@ import com.ym.canalsync.app.sync.bossproductdb.service.ITBssRegionService;
 import com.ym.canalsync.app.sync.pmsboss.service.ISysAreaService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesFloorService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class TBssRegionServiceImpl extends ServiceImpl<TBssRegionMapper, TBssReg
     private IZqHostspacesFloorService iZqHostspacesFloorService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssRegion tBssRegion = new TBssRegion();
         tBssRegion.setId(columns.getValue("id"));

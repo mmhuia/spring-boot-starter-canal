@@ -8,6 +8,7 @@ import com.ym.canalsync.app.sync.bossproductdb.entity.TBssAreainfo;
 import com.ym.canalsync.app.sync.bossproductdb.mapper.TBssAreainfoMapper;
 import com.ym.canalsync.app.sync.bossproductdb.service.ITBssAreainfoService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class TBssAreainfoServiceImpl extends ServiceImpl<TBssAreainfoMapper, TBssAreainfo> implements ITBssAreainfoService {
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssAreainfo t = new TBssAreainfo();
         t.setId(columns.getValue("id"));

@@ -10,6 +10,7 @@ import com.ym.canalsync.app.sync.bossproductdb.service.ITBssNetworkDevicePortSer
 import com.ym.canalsync.app.sync.pmsboss.entity.CanalZqHoPortView;
 import com.ym.canalsync.app.sync.pmsboss.service.ICanalZqHoPortViewService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class TBssNetworkDevicePortServiceImpl extends ServiceImpl<TBssNetworkDev
     private ICanalZqHoPortViewService iCanalZqHoPortViewService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssNetworkDevicePort t = new TBssNetworkDevicePort();
         t.setId(columns.getValue("id"));

@@ -11,18 +11,22 @@ spring:
           username: root
           password: 123456
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/boss_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          url: jdbc:mysql://localhost:3306/boss_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
         boss-product-db:
           username: it
           password: 654321
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://10.2.5.202:3306/boss_product_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+          url: jdbc:mysql://10.2.5.202:3306/boss_product_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
         boss-auth-db:
           username: it
           password: 654321
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://10.2.5.202:3306/boss_auth_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-
+          url: jdbc:mysql://10.2.5.202:3306/boss_auth_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      seata: true
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: fsp_tx_group
 #canal 配置
 canal:
   client:
@@ -47,6 +51,15 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     #开启mybatis打印SQL
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${defaultZone:http://127.0.0.1:9000/eureka}
+  instance:
+    prefer-ip-address: true
+
+
 
 
 

@@ -13,6 +13,7 @@ import com.ym.canalsync.app.sync.bossproductdb.service.SequenceService;
 import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesDiskmodule;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesDiskmoduleService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class TBssDiskDetailServiceImpl extends ServiceImpl<TBssDiskDetailMapper,
     private ITBssMemoryDetailService itBssMemoryDetailService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssDiskDetail t = new TBssDiskDetail();
         t.setId(id);

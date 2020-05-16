@@ -15,6 +15,7 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesDisktype;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesDiskmoduleService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesDisktypeService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class TBssDiskModelServiceImpl extends ServiceImpl<TBssDiskModelMapper, T
     private ITBssDiskDetailService itBssDiskDetailService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssDiskModel t = new TBssDiskModel();
         t.setId(id);
@@ -97,6 +99,7 @@ public class TBssDiskModelServiceImpl extends ServiceImpl<TBssDiskModelMapper, T
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void updateDiskTypeAttr(Columns columns, String id) {
         List<ZqHostspacesDiskmodule> zqHostspacesDiskmoduleList = iZqHostspacesDiskmoduleService.getBy(id);
         if (zqHostspacesDiskmoduleList == null || zqHostspacesDiskmoduleList.isEmpty()) {

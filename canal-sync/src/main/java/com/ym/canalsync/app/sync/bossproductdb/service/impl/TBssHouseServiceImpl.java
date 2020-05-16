@@ -14,6 +14,7 @@ import com.ym.canalsync.app.sync.pmsboss.service.ISysAreaService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesFloorService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesHouseService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class TBssHouseServiceImpl extends ServiceImpl<TBssHouseMapper, TBssHouse
     private ISysAreaService iSysAreaService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssHouse tBssHouse = new TBssHouse();
         tBssHouse.setId(columns.getValue("id"));
@@ -71,6 +73,7 @@ public class TBssHouseServiceImpl extends ServiceImpl<TBssHouseMapper, TBssHouse
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void updateOldHousePart(Columns columns, String id) {
         String oldHouseId = columns.getValue("id");
 

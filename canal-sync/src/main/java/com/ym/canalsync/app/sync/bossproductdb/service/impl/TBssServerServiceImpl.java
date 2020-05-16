@@ -13,6 +13,7 @@ import com.ym.canalsync.app.sync.bossproductdb.service.*;
 import com.ym.canalsync.app.sync.pmsboss.entity.*;
 import com.ym.canalsync.app.sync.pmsboss.service.*;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,6 +89,7 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
     private ITBssServerNetworkService itBssServerNetworkService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssServer t = new TBssServer();
         t.setId(id);
@@ -271,6 +273,7 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void delete(String id) {
         removeById(id);
 

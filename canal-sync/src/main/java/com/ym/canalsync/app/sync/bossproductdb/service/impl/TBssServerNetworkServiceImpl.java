@@ -13,6 +13,7 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoNetworkcard;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHoNeseService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHoNetworkcardService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class TBssServerNetworkServiceImpl extends ServiceImpl<TBssServerNetworkM
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssServerNetwork t = new TBssServerNetwork();
         t.setId(id);
@@ -68,6 +70,7 @@ public class TBssServerNetworkServiceImpl extends ServiceImpl<TBssServerNetworkM
     }
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void updateServerNetworkAttr(Columns columns, String id) {
         List<ZqHoNese> zqHoNeses = iZqHoNeseService.getBy(id);
 

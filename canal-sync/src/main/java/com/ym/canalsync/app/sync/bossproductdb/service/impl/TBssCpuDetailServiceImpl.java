@@ -16,6 +16,7 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHostspacesCputype;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesCpumoduleService;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHostspacesCputypeService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,7 @@ public class TBssCpuDetailServiceImpl extends ServiceImpl<TBssCpuDetailMapper, T
     private SequenceService sequenceService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssCpuDetail tBssCpuDetail = new TBssCpuDetail();
 

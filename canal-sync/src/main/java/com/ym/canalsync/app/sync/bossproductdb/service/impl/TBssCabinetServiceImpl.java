@@ -13,6 +13,7 @@ import com.ym.canalsync.app.sync.bossproductdb.mapper.TBssCabinetMapper;
 import com.ym.canalsync.app.sync.bossproductdb.service.ITBssCabinetService;
 import com.ym.canalsync.app.sync.bossproductdb.service.IVBssAreainfoService;
 import com.ym.canalsync.app.utils.P;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class TBssCabinetServiceImpl extends ServiceImpl<TBssCabinetMapper, TBssC
     private IVBssAreainfoService ivBssAreainfoService;
 
     @Override
+    @GlobalTransactional(rollbackFor = Throwable.class)
     public void onInsertOrUpdate(Columns columns, String id) {
         TBssCabinet tBssCabinet = new TBssCabinet();
         tBssCabinet.setId(columns.getValue("id"));
