@@ -87,7 +87,7 @@
     <!--    <logger name="java.sql.PreparedStatement" level="DEBUG"/>-->
 
     <!--主程序日志-->
-    <logger name="com.ym.canalsync.app" level="DEBUG" additivity="false">
+    <logger name="com.ym.canalsync.app" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_APP"/>
     </logger>

@@ -6,6 +6,7 @@ import com.ym.canalsync.app.config.DSEnum;
 import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoServicer;
 import com.ym.canalsync.app.sync.pmsboss.mapper.ZqHoServicerMapper;
 import com.ym.canalsync.app.sync.pmsboss.service.IZqHoServicerService;
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,4 +21,14 @@ import org.springframework.stereotype.Service;
 @DS(DSEnum.BOSS_PMS)
 public class ZqHoServicerServiceImpl extends ServiceImpl<ZqHoServicerMapper, ZqHoServicer> implements IZqHoServicerService {
 
+    @Override
+    public Integer getSeSalesstatus(String serverId) {
+        if(StringHelper.isNullOrEmptyString(serverId)){
+            return null;
+    }
+
+        ZqHoServicer zqHoServicer = getById(serverId);
+
+        return zqHoServicer == null ? null :zqHoServicer.getSeSalesstatus();
+    }
 }

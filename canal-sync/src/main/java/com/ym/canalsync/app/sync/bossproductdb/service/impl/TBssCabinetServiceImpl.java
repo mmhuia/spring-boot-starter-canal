@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -61,6 +63,14 @@ public class TBssCabinetServiceImpl extends ServiceImpl<TBssCabinetMapper, TBssC
         tBssCabinet.setType(getType(columns.getValue("del_flag")));
         tBssCabinet.setStatus(P.pInt(columns.getValue("denominated")));
         saveOrUpdate(tBssCabinet);
+    }
+
+    @Override
+    public String getLocationId(String cabinetId) {
+        return Optional.ofNullable(cabinetId)
+                .map(this::getById)
+                .map(TBssCabinet::getLocationId)
+                .orElse("");
     }
 
     private Integer getType(Object value) {

@@ -80,6 +80,8 @@ public class TBssServerNetwork implements Serializable {
      */
     private Date addTime;
 
+    private Integer sort;
+
     private Integer version = 0;
 
 

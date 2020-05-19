@@ -188,6 +188,7 @@ public class TBssServerServiceImpl extends ServiceImpl<TBssServerMapper, TBssSer
             t.setIsIpmi(P.pInt(zqHoNetworkcard.getIsMangeCard()));
             t.setInterfaceType(P.pInt(zqHoNetworkcard.getNeExport()));
             t.setIsInit(1);
+            t.setSort(0);
             t.setAddTime(null);
             collect.add(t);
         }

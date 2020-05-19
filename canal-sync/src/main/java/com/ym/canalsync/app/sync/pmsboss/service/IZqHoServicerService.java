@@ -13,4 +13,5 @@ import com.ym.canalsync.app.sync.pmsboss.entity.ZqHoServicer;
  */
 public interface IZqHoServicerService extends IService<ZqHoServicer> {
 
+    Integer getSeSalesstatus(String serverId);
 }
