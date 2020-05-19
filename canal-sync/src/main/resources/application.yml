@@ -8,18 +8,18 @@ spring:
       primary: boss-pms
       datasource:
         boss-pms:
-          username: root
-          password: 123456
+          username: canal
+          password: canal_sync
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/boss_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+          url: jdbc:mysql://10.222.14.217:3306/boss_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
         boss-product-db:
-          username: it
-          password: 654321
+          username: canal
+          password: canal_sync
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://10.2.5.202:3306/boss_product_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
         boss-auth-db:
-          username: it
-          password: 654321
+          username: canal
+          password: canal_sync
           driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://10.2.5.202:3306/boss_auth_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
       seata: true
@@ -34,10 +34,11 @@ canal:
       oldToNew:
         batchSize: 1000
         clusterEnabled: false
+        #host: 10.2.5.202
         host: 127.0.0.1
         port: 11111
-        userName: canal
-        password: canal
+#        userName:
+#        password:
 
 #mybatis 配置
 mybatis-plus:
