@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ym</groupId>
-    <artifactId>${app.name}</artifactId>
+    <artifactId>canal-sync</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>${app.name}</name>
+    <name>canal-sync</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -120,6 +120,41 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
+<!--            打包时构件docker镜像并推送-->
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>docker-maven-plugin</artifactId>-->
+<!--                <version>1.0.0</version>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; 重复构建相同标签的镜像 &ndash;&gt;-->
+<!--                    <forceTags>true</forceTags>-->
+<!--                    &lt;!&ndash; 完成镜像构建后自动推送镜像 &ndash;&gt;-->
+<!--                    <pushImage>true</pushImage>-->
+<!--                    <imageName>mmhuia/canal-sync:0.0.1</imageName>-->
+<!--                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>-->
+<!--                    <resources>-->
+<!--                        <resource>-->
+<!--                            <targetPath>/</targetPath>-->
+<!--                            <directory>${project.build.directory}</directory>-->
+<!--                            <include>${project.build.finalName}.jar</include>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+<!--                    &lt;!&ndash;将镜像推送到配置的docker-hub下，配置在全局setting.xml中&ndash;&gt;-->
+<!--                    <serverId>docker-hub</serverId>-->
+<!--                    <dockerHost>http://192.168.42.1:2375</dockerHost>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>build-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
 
         <resources>
