@@ -168,17 +168,25 @@
         </resources>
     </build>
 
-    <!--    <profiles>-->
-    <!--        <profile>-->
-    <!--            <id>dev</id>-->
-    <!--            <properties>-->
-    <!--                <app.name>canal-sync</app.name>-->
-    <!--            </properties>-->
-    <!--            <activation>-->
-    <!--                <activeByDefault>true</activeByDefault>-->
-    <!--            </activation>-->
-    <!--        </profile>-->
-    <!--    </profiles>-->
-
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>local</id>
+            <properties>
+                <profiles.active>local</profiles.active>
+            </properties>
+            <activation>
+                <!-- 设置默认激活这个配置 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- 发布环境 -->
+            <id>test</id>
+            <properties>
+                <profiles.active>test</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

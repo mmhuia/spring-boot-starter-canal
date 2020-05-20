@@ -1,0 +1,66 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: $[app.name]
+  datasource:
+    dynamic:
+      primary: boss-pms
+      datasource:
+        boss-pms:
+          username: canal
+          password: canal_sync
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://10.222.14.217:3306/boss_pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        boss-product-db:
+          username: canal
+          password: canal_sync
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://10.2.5.202:3306/boss_product_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        boss-auth-db:
+          username: canal
+          password: canal_sync
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://10.2.5.202:3306/boss_auth_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      seata: true
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: fsp_tx_group
+#canal 配置
+canal:
+  client:
+    instances:
+      oldToNew:
+        batchSize: 1000
+        clusterEnabled: false
+        #host: 10.2.5.202
+        host: 127.0.0.1
+        port: 11111
+#        userName:
+#        password:
+
+#mybatis 配置
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在src/main/resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.ym.canalsync.app.sync.*.entity
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    #开启mybatis打印SQL
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${defaultZone:http://10.2.5.205/:9000/eureka}
+  instance:
+    prefer-ip-address: true
+
+
+
+
+
